@@ -16,8 +16,6 @@ public class PlayerController : MonoBehaviour {
 	bool facingUp;
 	//boolean to allow or disallow jumping
 	bool touchingGround;
-	//controls player evolutions
-	bool jump, speed;
 
 	//boolean to check if we can control the player (the game started or not)
 	private bool canControl;
@@ -36,7 +34,7 @@ public class PlayerController : MonoBehaviour {
 		jump, speed = false;
 		startPosition = transform.position;
 		//as soon as the player evolved to jump
-		if (speed) {
+		if (Evolution.speed) {
 			maxSpeed = 12f;
 		}
 	}
@@ -65,7 +63,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			
 			//as soon as the player evolved to jump
-			if (jump) {
+			if (Evolution.jump) {
 				if(touchingGround && Input.GetKeyDown (KeyCode.Space)){
 					touchingGround = false;
 					//need to double check if this works
