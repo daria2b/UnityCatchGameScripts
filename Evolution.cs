@@ -1,0 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+//This script will hold information on what level the player is at and what evolutions were bought already
+public class Evolution : MonoBehaviour {
+	
+	//this variable is not used yet, but is created for future use
+	public static playerLevel = 1;
+	
+	//booleans to be used to determine what evolutions and powers the player has
+	public static bool jump = false;
+	public static bool speed = false;
+	public static bool shield = false;
+	
+
+}
