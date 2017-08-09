@@ -33,8 +33,12 @@ public class Stats : MonoBehaviour {
 		//at the start the score is 0
 		scoreHolder = score;
 		healthHolder = health;
-		//display text
+		if (Evolution.shield) {
+			Stats.shield = 20;
+		}
+		//display text with points and health (health has not yet been implemented in game
 		UpdateScore();
+		UpdateHealth ();
 	}
 
 	void Update () {
