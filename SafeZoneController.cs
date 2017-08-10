@@ -55,6 +55,19 @@ public class SafeZoneController : MonoBehaviour {
 		statsPanel.SetActive (false);
 		buttonsPanel.SetActive (false);
 		evolutionPanel.SetActive (true);
+		//disable buttons and text if evolutions were already bought
+		if (Evolution.jump) {
+			jumpEvolve.color = Color.gray;
+			jumpButton.interactable = false;
+		} 
+		if (Evolution.speed) {
+			speedEvolve.color = Color.gray;
+			speedButton.interactable = false;
+		}
+		if (Evolution.shield) {
+			shieldEvolve.color = Color.gray;
+			shieldButton.interactable = false;
+		}
 	}
 
 	public void GoToCatch () {
