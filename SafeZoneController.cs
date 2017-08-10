@@ -95,6 +95,7 @@ public class SafeZoneController : MonoBehaviour {
 				StartCoroutine (ShowErrorMessage ());
 			} else {
 				Stats.score -= 20;
+				Evolution.jump = true;
 				StartCoroutine (ShowSuccessMessage ());
 				jumpEvolve.color = Color.gray;
 				jumpButton.interactable = false;
@@ -106,6 +107,7 @@ public class SafeZoneController : MonoBehaviour {
 				StartCoroutine (ShowErrorMessage ());
 			} else {
 				Stats.score -= 40;
+				Evolution.speed = true;
 				StartCoroutine (ShowSuccessMessage ());
 				speedEvolve.color = Color.gray;
 				speedButton.interactable = false;
@@ -117,6 +119,7 @@ public class SafeZoneController : MonoBehaviour {
 				StartCoroutine (ShowErrorMessage ());
 			} else {
 				Stats.score -= 60;
+				Evolution.shield = true;
 				StartCoroutine (ShowSuccessMessage ());
 				shieldEvolve.color = Color.gray;
 				shieldButton.interactable = false;

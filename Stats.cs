@@ -38,7 +38,7 @@ public class Stats : MonoBehaviour {
 		}
 		//display text with points and health (health has not yet been implemented in game
 		UpdateScore();
-		UpdateHealth ();
+		//UpdateHealth ();
 	}
 
 	void Update () {
@@ -49,7 +49,7 @@ public class Stats : MonoBehaviour {
 		}
 		//check if the health value has been changed as well
 		if (healthHolder != health) {
-			UpdateHealth();
+			//UpdateHealth();
 			healthHolder = health;
 		}
 	}
@@ -58,9 +58,9 @@ public class Stats : MonoBehaviour {
 	void UpdateScore () {
 		scoreText.text = "Points:\n" + score;
 	}
-
-	void UpdateHealth () {
-		healthText.text = "Health:\n" +health;
-	}
+	//this function is not being used yet
+	//void UpdateHealth () {
+	//	healthText.text = "Health:\n" + health;
+	//}
 		
 }

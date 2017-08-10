@@ -6,16 +6,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 	public float maxSpeed = 8f;
-	public float jumpForce = 10f;
-	// public float rotationSpeed = 0.1f;	// Rotation is not being used here, the CircleCollider makes the object rotate
+	public float jumpForce = 350f;
+
 	//references to different components of this game object
 	Rigidbody2D myRB;
 	Animator myAnimation; 
 	//boolean variables will be used to control player rotation and what side it faces
 	bool facingRight;
 	bool facingUp;
-	//boolean to allow or disallow jumping
-	bool touchingGround;
 
 	//boolean to check if we can control the player (the game started or not)
 	private bool canControl;
@@ -23,22 +21,30 @@ public class PlayerController : MonoBehaviour {
 	//to hold start position of the player
 	private Vector3 startPosition;
 
+	//used to count down until the player can jump again
+	float jumpTimeCount;
+
 	// Use this for initialization
 	void Start () {
 		myRB = GetComponent<Rigidbody2D> ();
 		myAnimation = GetComponent<Animator> ();	
 		facingRight = true;
 		canControl = true;
-		touchingGround = false;
-		//the player has not acquired any evolutions at the start of the game, therefore, can only roll to left and right
-		jump, speed = false;
 		startPosition = transform.position;
 		//as soon as the player evolved to jump
 		if (Evolution.speed) {
 			maxSpeed = 12f;
 		}
 	}
-	
+
+	void Update () {
+		jumpTimeCount -= Time.deltaTime;
+		if (Evolution.jump && Input.GetAxis ("Jump") > 0 && jumpTimeCount < 0) {
+			jumpTimeCount = 1f;
+			myRB.AddForce (new Vector2 (0, jumpForce));
+		}
+	}
+
 	// Update is called once per frame
 	void FixedUpdate () {
 		//only allow controlling the character if the game started
@@ -60,26 +66,17 @@ public class PlayerController : MonoBehaviour {
 			//reset rotation to 0 if not moving so that the idle jump animation is displayed correctly
 			if (move == 0) {
 				transform.rotation = Quaternion.identity;
-			}
-			
+			}	
+
 			//as soon as the player evolved to jump
-			if (Evolution.jump) {
-				if(touchingGround && Input.GetKeyDown (KeyCode.Space)){
-					touchingGround = false;
-					//need to double check if this works
-					rigidbody2D.AddForce (new Vector2 (0,jumpForce));
-				}
-			}
-			
-		} 
+			//touchingGround && Evolution.jump &&
+
+		}
+
+
+		 
 	}
-	
-	//reset the player touchingGround booleand as soon as encounters the ground object
-	void OnTriggerEnter2D (Collider2D other) {
-		if (other.gameObject.tag == "Ground") {
-			touchingGround = true;
-		} 
-	}
+
 	
 	//flip sprite to the side the player is facing
 	void Flip () {
