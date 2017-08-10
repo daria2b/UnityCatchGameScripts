@@ -1,4 +1,4 @@
-# My First Game - 2D Catch Game
+# 2D Catch Game
 
 This repository will contain scripts in C# for my very first video game project in Unity. I will not be adding any other files in this repository to keep it focused.
 
@@ -26,12 +26,13 @@ Here below is the list of mechanics that have been completed or are in plan to b
 	- [x] Points, health and coins display
 	- [x] Choice to return to Level 1 or spend points
 	- [x] Choice of 3 evolutions to buy
-	- [ ] Spending points and enabling new mechanics
-- [ ] Advanced player controls that are used once evolutions were bought
-	- [ ] Jump mechanics
-	- [ ] Increased speed mechanics
-	- [ ] Shield mechanics
+	- [x] Spending points and enabling new mechanics
+- [x] Advanced player controls that are used once evolutions were bought
+	- [x] Jump mechanics
+	- [x] Increased speed mechanics
+	- [x] Shield mechanics
 - [ ] Health system
 - [ ] Money system
 - [ ] Player Level system
 - [ ] New areas to explore
+- [ ] Improved representation of points, levels, health, coins and timer
