@@ -18,15 +18,21 @@ public class FallingObjectController : MonoBehaviour {
 			Stats.score += pointsValue;
 			Stats.coins += coinsValue;
 			//first apply damage to the shield, then to health
-			if (Stats.shield > damageValue) {
-				Stats.shield -= damageValue;
+			if (Stats.currentShield > damageValue) {
+				Stats.currentShield -= damageValue;
 			} else {
 				//calculate the damage difference between what was absorbed by the shield
-				float damageHolder = damageValue - Stats.shield;
-				Stats.shield = 0;
-				Stats.health -= damageHolder;
+				float damageHolder = damageValue - Stats.currentShield;
+				Stats.currentShield = 0;
+				Stats.currentHealth -= damageHolder;
 			}
-		} 
-		Destroy (gameObject);
+			//Destroy object on contact with player
+			Destroy (gameObject);
+		} else if (other.gameObject.tag == "Ground") {
+			//Destroy object on contact with ground if it hasn't collide with the player
+			//Falling objects will not be destroyed on contact with other falling objects
+			Destroy (gameObject);
+		}
+		
 	}
 }

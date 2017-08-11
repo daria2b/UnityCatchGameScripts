@@ -16,6 +16,9 @@ public class GameController : MonoBehaviour {
 	//get reference to some game objects to be able to activate them later on
 	public GameObject timesUpText;
 	public GameObject endLevelPanel;
+	
+	//will hold the title of the area and the countdown till the beginning of the actual game
+	public Text gameStartText;
 
 	//will be used to control the timer
 	private bool playing;
@@ -70,8 +73,18 @@ public class GameController : MonoBehaviour {
 	}
 
 	IEnumerator Spawn () {
-		//wait for 2 seconds when starting the game before spawning objects 
-		yield return new WaitForSeconds (2.0f);
+		//Display the level name and count down to start the game
+		gameStartText.text = "Sun Valley";
+		yield return new WaitForSeconds (1.0f);
+		gameStartText.text = "3";
+		yield return new WaitForSeconds (1.0f);
+		gameStartText.text = "2";
+		yield return new WaitForSeconds (1.0f);
+		gameStartText.text = "1";
+		yield return new WaitForSeconds (1.0f);
+		gameStartText.text = "Go!";
+		
+		//once all preliminary processes completed, the timer and the game can start
 		playing = true;
 		while (timeLeft > 0) {
 			//get a random object to spawn from the array of objects
