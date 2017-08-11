@@ -116,6 +116,7 @@ public class SafeZoneController : MonoBehaviour {
 			//this part identifies what evolution has been chose, but it will need to be changed to a distionary instead
 			Stats.score -= (Evolution.playerLevel * 20);
 			StartCoroutine (ShowSuccessMessage ());
+			Evolution.playerLevel +=1;
 			switch (index) {
 				case 1:
 					Evolution.jump = true;
@@ -124,9 +125,13 @@ public class SafeZoneController : MonoBehaviour {
 					break;
 				case 2: 
 					Evolution.speed = true;
+					speedEvolve.color = Color.gray;
+					speedButton.interactable = false;
 					break;
 				case 3:
 					Evolution.shield = true;
+					shieldEvolve.color = Color.gray;
+					shieldButton.interactable = false;
 					break;
 			}	
 		}
