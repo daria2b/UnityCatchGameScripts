@@ -24,6 +24,9 @@ public class SafeZoneController : MonoBehaviour {
 	public Text jumpEvolve;
 	public Text speedEvolve;
 	public Text shieldEvolve;
+	
+	public GameObject errorPanel;
+	public GameObject successPanel;
 
 	private int scoreHolder;
 	private float healthHolder;
@@ -39,23 +42,26 @@ public class SafeZoneController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		//if since last frame score has been updated (e.g. because of collision with falling objects), call UpdateScore function and put current scroe into the score holder for future checks
+		//If since last frame score has been updated (e.g. because of collision with falling objects), call UpdateScore function and put current score into the score holder for future checks
 		if (scoreHolder != Stats.score) {
 			UpdateScore ();
 			scoreHolder = Stats.score;
 		}
-		//check if the health value has been changed as well
+		//Check if the health value has been changed as well
 		if (healthHolder != Stats.health) {
 			UpdateHealth();
 			healthHolder = Stats.health;
 		}
 	}
-
+	
+	//Called when Evolve button is clicked. Open the panel where the player can choose an evolution to buy
 	public void ShowEvolvePanel () {
+		
 		statsPanel.SetActive (false);
 		buttonsPanel.SetActive (false);
 		evolutionPanel.SetActive (true);
-		//disable buttons and text if evolutions were already bought
+		//disable buttons and text if evolutions were already bought 
+		//Plan to remove the button altogether and update the title with a green checkbox to show that evolution was bought already
 		if (Evolution.jump) {
 			jumpEvolve.color = Color.gray;
 			jumpButton.interactable = false;
@@ -69,22 +75,20 @@ public class SafeZoneController : MonoBehaviour {
 			shieldButton.interactable = false;
 		}
 	}
-
+	
+	//Called when the Play button is clicked and loads a level 
 	public void GoToCatch () {
 		SceneManager.LoadScene (1);
 	}
-
+	
+	//Called when the button Back is clicked to go to the main screen
 	public void BackToStats () {
 		evolutionPanel.SetActive (false);
 		statsPanel.SetActive (true);
 		buttonsPanel.SetActive (true);
 	}
 
-	public void EvolveCharacter () {
-
-	}
-
-	//these are used to update text
+	//These are used to update text. Need to think of a way to take these functions out and use them in different scripts
 	void UpdateScore () {
 		pointsText.text = "" + Stats.score;
 	}
@@ -100,58 +104,47 @@ public class SafeZoneController : MonoBehaviour {
 	void UpdateShield () {
 		shieldText.text = "" + Stats.shield;
 	}
-
-	public GameObject errorPanel;
-	public GameObject successPanel;
-
+	
+	//This is called by the button that sends integer to identify what evolution has been chosen by player
+	//Checks if player has enough points to spend on the evolution
+	//If yes, set this evolution to true
 	public void ButtonPressedCallback (int index) {
-		switch (index) {
-		//index 1 = Jump Evolve, costs 20 points
-		case 1:
-			if (Stats.score < 20) {
-				StartCoroutine (ShowErrorMessage ());
-			} else {
-				Stats.score -= 20;
-				Evolution.jump = true;
-				StartCoroutine (ShowSuccessMessage ());
-				jumpEvolve.color = Color.gray;
-				jumpButton.interactable = false;
-			}
-			break;
-			//index 2 = Speed Evolve, costs 40 points
-		case 2:
-			if (Stats.score < 40) {
-				StartCoroutine (ShowErrorMessage ());
-			} else {
-				Stats.score -= 40;
-				Evolution.speed = true;
-				StartCoroutine (ShowSuccessMessage ());
-				speedEvolve.color = Color.gray;
-				speedButton.interactable = false;
-			}
-			break;
-			//index 3 = Shield Evolve, costs 60 points
-		case 3:
-			if (Stats.score < 60) {
-				StartCoroutine (ShowErrorMessage ());
-			} else {
-				Stats.score -= 60;
-				Evolution.shield = true;
-				StartCoroutine (ShowSuccessMessage ());
-				shieldEvolve.color = Color.gray;
-				shieldButton.interactable = false;
-			}
-			break;
+		//check if the player has enough points to spend depending on his current level
+		if (Stats.score < (Evolution.playerLevel * 20)) {
+			StartCoroutine (ShowErrorMessage ());
+		} else {
+			//this part identifies what evolution has been chose, but it will need to be changed to a distionary instead
+			Stats.score -= (Evolution.playerLevel * 20);
+			StartCoroutine (ShowSuccessMessage ());
+			switch (index) {
+				case 1:
+					Evolution.jump = true;
+					jumpEvolve.color = Color.gray;
+					jumpButton.interactable = false;
+					break;
+				case 2: 
+					Evolution.speed = true;
+					break;
+				case 3:
+					Evolution.shield = true;
+					break;
+			}	
 		}
 	}
-
+	
+	//Called if the player did not have enough points to evolve. Shows error message
 	private IEnumerator ShowErrorMessage () {
+		if (successPanel.activeSelf) 
+			successPanel.SetActive (false);
 		errorPanel.SetActive (true);
 		yield return new WaitForSeconds (2.0f);
 		errorPanel.SetActive (false);
 	}
-
+	
+	//Called if the player had enough points to evolve. Shows success message
 	private IEnumerator ShowSuccessMessage () {
+		if (errorPanel.activeSelf) 
+			errorPanel.SetActive (false);
 		successPanel.SetActive (true);
 		yield return new WaitForSeconds (2.0f);
 		successPanel.SetActive (false);
