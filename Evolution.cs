@@ -9,7 +9,7 @@ public class Evolution : MonoBehaviour {
 	public static int playerLevel = 1;
 	
 	//booleans to be used to determine what evolutions and powers the player has
-	public static bool jump = false;
+	public static bool jump = true;
 	public static bool speed = false;
 	public static bool shield = false;
 

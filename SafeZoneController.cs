@@ -98,6 +98,9 @@ public class SafeZoneController : MonoBehaviour {
 	}
 
 	void UpdateShield () {
+		if (Evolution.shield = true) {
+			Stats.shield = 20;
+		}
 		shieldText.text = "" + Stats.shield;
 	}
 
