@@ -13,6 +13,7 @@ public class SafeZoneController : MonoBehaviour {
 	public Text pointsText;
 	public Text healthText;
 	public Text coinsText;
+	public Text shieldText;
 	public GameObject evolveButton;
 	public GameObject catchButton;
 
@@ -29,14 +30,13 @@ public class SafeZoneController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//line for texting to be removed
-		Stats.score = 140;
 		//Show the most recent data on the player stats
 		UpdateScore ();
 		UpdateCoins ();
 		UpdateHealth ();
+		UpdateShield ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		//if since last frame score has been updated (e.g. because of collision with falling objects), call UpdateScore function and put current scroe into the score holder for future checks
@@ -81,20 +81,24 @@ public class SafeZoneController : MonoBehaviour {
 	}
 
 	public void EvolveCharacter () {
-		
+
 	}
 
 	//these are used to update text
 	void UpdateScore () {
-		pointsText.text = "Points:\n" + Stats.score;
+		pointsText.text = "" + Stats.score;
 	}
 
 	void UpdateHealth () {
-		healthText.text = "Health:\n" + Stats.health;
+		healthText.text = "" + Stats.health;
 	}
 
 	void UpdateCoins () {
-		coinsText.text = "Coins:\n" + Stats.coins;
+		coinsText.text = "" + Stats.coins;
+	}
+
+	void UpdateShield () {
+		shieldText.text = "" + Stats.shield;
 	}
 
 	public GameObject errorPanel;
