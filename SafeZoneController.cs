@@ -48,9 +48,9 @@ public class SafeZoneController : MonoBehaviour {
 			scoreHolder = Stats.score;
 		}
 		//Check if the health value has been changed as well
-		if (healthHolder != Stats.health) {
+		if (healthHolder != Stats.currentHealth) {
 			UpdateHealth();
-			healthHolder = Stats.health;
+			healthHolder = Stats.currentHealth;
 		}
 	}
 	
@@ -94,7 +94,7 @@ public class SafeZoneController : MonoBehaviour {
 	}
 
 	void UpdateHealth () {
-		healthText.text = "" + Stats.health;
+		healthText.text = "" + Stats.currentHealth + "/" + Stats.maxHealth;
 	}
 
 	void UpdateCoins () {
@@ -102,7 +102,7 @@ public class SafeZoneController : MonoBehaviour {
 	}
 
 	void UpdateShield () {
-		shieldText.text = "" + Stats.shield;
+		shieldText.text = "" + Stats.currentShield + "/" + Stats.maxShield;
 	}
 	
 	//This is called by the button that sends integer to identify what evolution has been chosen by player
@@ -116,7 +116,8 @@ public class SafeZoneController : MonoBehaviour {
 			//this part identifies what evolution has been chose, but it will need to be changed to a distionary instead
 			Stats.score -= (Evolution.playerLevel * 20);
 			StartCoroutine (ShowSuccessMessage ());
-			Evolution.playerLevel +=1;
+			Evolution.playerLevel +=1;		//Player level increases after each evolution bought
+			Stats.maxHealth += 5; 			//Maximum health increases by 5 after each evolution
 			switch (index) {
 				case 1:
 					Evolution.jump = true;
