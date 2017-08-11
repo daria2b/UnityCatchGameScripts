@@ -25,7 +25,8 @@ public class Stats : MonoBehaviour {
 	[HideInInspector] public static int coins = 0;
 	private float coinsHolder;
 	//shield is only used when the player. At the beginning of the game is set to 0 and should not be shown on the game screen
-	[HideInInspector] public static float shield = 0;
+	[HideInInspector] public static float maxShield = 0;
+	[HideInInspector] public static float currentShield;
 	private float shieldHolder;
 
 	//keep this script containing static variables when switching from one scene to another
@@ -40,8 +41,10 @@ public class Stats : MonoBehaviour {
 		currentHealth = maxHealth;
 		healthHolder = currentHealth;
 		if (Evolution.shield) {
-			Stats.shield = 20;
+			maxShield = 20;
+			currentShield = maxShield;
 		}
+		shieldHolder = currentShield;
 		//display text with points and health (health has not yet been implemented in game
 		UpdateScore();
 		UpdateHealth ();
@@ -64,9 +67,9 @@ public class Stats : MonoBehaviour {
 			UpdateCoins();
 			coinsHolder = coins;
 		}
-		if (shieldHolder != shield) {
+		if (shieldHolder != currentShield) {
 			UpdateShield();
-			shieldHolder = shield;
+			shieldHolder = currentShield;
 		}
 	}
 
@@ -76,7 +79,7 @@ public class Stats : MonoBehaviour {
 	}
 
 	void UpdateHealth () {
-		healthText.text = "" + currentHealth;
+		healthText.text = "" + currentHealth + "/" + maxHealth;
 	}
 
 	void UpdateCoins () {
@@ -84,7 +87,7 @@ public class Stats : MonoBehaviour {
 	}
 
 	void UpdateShield () {
-		shieldText.text = "" + shield;
+		shieldText.text = "" + currentShield + "/" + maxShield;
 	}
 		
 }
