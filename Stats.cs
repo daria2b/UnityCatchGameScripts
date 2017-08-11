@@ -8,6 +8,8 @@ public class Stats : MonoBehaviour {
 	//this will store the text in a variable and will be used to get a reference to the text to display
 	public Text scoreText;
 	public Text healthText;
+	public Text coinsText;
+	public Text shieldText;
 
 	//this will be used to store the player's score
 	//Static keyword makes this variable a Member of the class, not of any particular instance.
@@ -17,11 +19,13 @@ public class Stats : MonoBehaviour {
 	private int scoreHolder;
 
 	//player health & money that can also be easily accessed by other scripts
-	[HideInInspector] public static float health = 100;
+	[HideInInspector] public static float health = 50;
 	private float healthHolder;
 	[HideInInspector] public static int coins = 0;
+	private float coinsHolder;
 	//shield is only used when the player. At the beginning of the game is set to 0 and should not be shown on the game screen
 	[HideInInspector] public static float shield = 0;
+	private float shieldHolder;
 
 	//keep this script containing static variables when switching from one scene to another
 	void Awake() {
@@ -38,7 +42,9 @@ public class Stats : MonoBehaviour {
 		}
 		//display text with points and health (health has not yet been implemented in game
 		UpdateScore();
-		//UpdateHealth ();
+		UpdateHealth ();
+		UpdateCoins ();
+		UpdateShield ();
 	}
 
 	void Update () {
@@ -47,20 +53,36 @@ public class Stats : MonoBehaviour {
 			UpdateScore ();
 			scoreHolder = score;
 		}
-		//check if the health value has been changed as well
+		//check if the other values has been changed as well
 		if (healthHolder != health) {
-			//UpdateHealth();
+			UpdateHealth();
 			healthHolder = health;
+		}
+		if (coinsHolder != coins) {
+			UpdateCoins();
+			coinsHolder = coins;
+		}
+		if (shieldHolder != shield) {
+			UpdateShield();
+			shieldHolder = shield;
 		}
 	}
 
 	//this is used to update the score text
 	void UpdateScore () {
-		scoreText.text = "Points:\n" + score;
+		scoreText.text = "" + score;
 	}
-	//this function is not being used yet
-	//void UpdateHealth () {
-	//	healthText.text = "Health:\n" + health;
-	//}
+
+	void UpdateHealth () {
+		healthText.text = "" + health;
+	}
+
+	void UpdateCoins () {
+		coinsText.text = "" + coins;
+	}
+
+	void UpdateShield () {
+		shieldText.text = "" + shield;
+	}
 		
 }
