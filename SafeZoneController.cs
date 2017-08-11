@@ -10,10 +10,7 @@ public class SafeZoneController : MonoBehaviour {
 	public GameObject statsPanel;
 	public GameObject buttonsPanel;
 	public GameObject evolutionPanel;
-	public Text pointsText;
-	public Text healthText;
-	public Text coinsText;
-	public Text shieldText;
+	
 	public GameObject evolveButton;
 	public GameObject catchButton;
 
@@ -28,30 +25,14 @@ public class SafeZoneController : MonoBehaviour {
 	public GameObject errorPanel;
 	public GameObject successPanel;
 
-	private int scoreHolder;
-	private float healthHolder;
-
 	// Use this for initialization
 	void Start () {
-		//Show the most recent data on the player stats
-		UpdateScore ();
-		UpdateCoins ();
-		UpdateHealth ();
-		UpdateShield ();
+
 	}
 
 	// Update is called once per frame
 	void Update () {
-		//If since last frame score has been updated (e.g. because of collision with falling objects), call UpdateScore function and put current score into the score holder for future checks
-		if (scoreHolder != Stats.score) {
-			UpdateScore ();
-			scoreHolder = Stats.score;
-		}
-		//Check if the health value has been changed as well
-		if (healthHolder != Stats.currentHealth) {
-			UpdateHealth();
-			healthHolder = Stats.currentHealth;
-		}
+
 	}
 	
 	//Called when Evolve button is clicked. Open the panel where the player can choose an evolution to buy
@@ -86,23 +67,6 @@ public class SafeZoneController : MonoBehaviour {
 		evolutionPanel.SetActive (false);
 		statsPanel.SetActive (true);
 		buttonsPanel.SetActive (true);
-	}
-
-	//These are used to update text. Need to think of a way to take these functions out and use them in different scripts
-	void UpdateScore () {
-		pointsText.text = "" + Stats.score;
-	}
-
-	void UpdateHealth () {
-		healthText.text = "" + Stats.currentHealth + "/" + Stats.maxHealth;
-	}
-
-	void UpdateCoins () {
-		coinsText.text = "" + Stats.coins;
-	}
-
-	void UpdateShield () {
-		shieldText.text = "" + Stats.currentShield + "/" + Stats.maxShield;
 	}
 	
 	//This is called by the button that sends integer to identify what evolution has been chosen by player
