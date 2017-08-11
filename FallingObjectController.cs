@@ -26,7 +26,13 @@ public class FallingObjectController : MonoBehaviour {
 				Stats.shield = 0;
 				Stats.health -= damageHolder;
 			}
-		} 
-		Destroy (gameObject);
+			//Destroy object on contact with player
+			Destroy (gameObject);
+		} else if (other.gameObject.tag == "Ground") {
+			//Destroy object on contact with ground if it hasn't collide with the player
+			//Falling objects will not be destroyed on contact with other falling objects
+			Destroy (gameObject);
+		}
+		
 	}
 }
