@@ -19,7 +19,8 @@ public class Stats : MonoBehaviour {
 	private int scoreHolder;
 
 	//player health & money that can also be easily accessed by other scripts
-	[HideInInspector] public static float health = 50;
+	[HideInInspector] public static float maxHealth = 50;
+	[HideInInspector] public static float currentHealth;
 	private float healthHolder;
 	[HideInInspector] public static int coins = 0;
 	private float coinsHolder;
@@ -36,7 +37,8 @@ public class Stats : MonoBehaviour {
 	void Start () {
 		//at the start the score is 0
 		scoreHolder = score;
-		healthHolder = health;
+		currentHealth = maxHealth;
+		healthHolder = currentHealth;
 		if (Evolution.shield) {
 			Stats.shield = 20;
 		}
@@ -54,9 +56,9 @@ public class Stats : MonoBehaviour {
 			scoreHolder = score;
 		}
 		//check if the other values has been changed as well
-		if (healthHolder != health) {
+		if (healthHolder != currentHealth) {
 			UpdateHealth();
-			healthHolder = health;
+			healthHolder = currentHealth;
 		}
 		if (coinsHolder != coins) {
 			UpdateCoins();
@@ -74,7 +76,7 @@ public class Stats : MonoBehaviour {
 	}
 
 	void UpdateHealth () {
-		healthText.text = "" + health;
+		healthText.text = "" + currentHealth;
 	}
 
 	void UpdateCoins () {
