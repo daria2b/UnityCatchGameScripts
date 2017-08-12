@@ -7,7 +7,11 @@ using UnityEngine.SceneManagement;
 public class SafeZoneController : MonoBehaviour {
 
 	//get reference to some game objects to be able to activate them later on
-	public GameObject statsPanel;
+	public GameObject healthPanel;
+	public GameObject shieldPanel;
+	public GameObject coinsPanel;
+	public GameObject pointsPanel;
+
 	public GameObject buttonsPanel;
 	public GameObject evolutionPanel;
 	
@@ -27,7 +31,8 @@ public class SafeZoneController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		if (Evolution.shield) 
+			shieldPanel.SetActive (true);
 	}
 
 	// Update is called once per frame
@@ -37,10 +42,16 @@ public class SafeZoneController : MonoBehaviour {
 	
 	//Called when Evolve button is clicked. Open the panel where the player can choose an evolution to buy
 	public void ShowEvolvePanel () {
-		
-		statsPanel.SetActive (false);
+		//Display only relevant buttons and images
+		healthPanel.SetActive (false);
+		shieldPanel.SetActive (false);
+		coinsPanel.SetActive (false);
 		buttonsPanel.SetActive (false);
 		evolutionPanel.SetActive (true);
+
+		jumpButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 20);
+		speedButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 20);
+		shieldButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 20);
 		//disable buttons and text if evolutions were already bought 
 		//Plan to remove the button altogether and update the title with a green checkbox to show that evolution was bought already
 		if (Evolution.jump) {
@@ -64,45 +75,17 @@ public class SafeZoneController : MonoBehaviour {
 	
 	//Called when the button Back is clicked to go to the main screen
 	public void BackToStats () {
+		healthPanel.SetActive (true);
+		if (Evolution.shield) 
+			shieldPanel.SetActive (true);
+		coinsPanel.SetActive (true);
 		evolutionPanel.SetActive (false);
-		statsPanel.SetActive (true);
 		buttonsPanel.SetActive (true);
 	}
-<<<<<<< HEAD
-
-	public void EvolveCharacter () {
-
-	}
-
-	//these are used to update text
-	void UpdateScore () {
-		pointsText.text = "" + Stats.score;
-	}
-
-	void UpdateHealth () {
-		healthText.text = "" + Stats.health;
-	}
-
-	void UpdateCoins () {
-		coinsText.text = "" + Stats.coins;
-	}
-
-	void UpdateShield () {
-		if (Evolution.shield = true) {
-			Stats.shield = 20;
-		}
-		shieldText.text = "" + Stats.shield;
-	}
-
-	public GameObject errorPanel;
-	public GameObject successPanel;
-
-=======
 	
 	//This is called by the button that sends integer to identify what evolution has been chosen by player
 	//Checks if player has enough points to spend on the evolution
 	//If yes, set this evolution to true
->>>>>>> 0d66288191d3b52b24d7895dc73e21e3b7fc9fa2
 	public void ButtonPressedCallback (int index) {
 		//check if the player has enough points to spend depending on his current level
 		if (Stats.score < (Evolution.playerLevel * 20)) {

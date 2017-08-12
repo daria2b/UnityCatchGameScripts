@@ -83,6 +83,8 @@ public class GameController : MonoBehaviour {
 		gameStartText.text = "1";
 		yield return new WaitForSeconds (1.0f);
 		gameStartText.text = "Go!";
+		yield return new WaitForSeconds (1.0f);
+		gameStartText.text = "";
 		
 		//once all preliminary processes completed, the timer and the game can start
 		playing = true;

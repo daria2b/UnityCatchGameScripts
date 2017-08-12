@@ -12,6 +12,6 @@ public class StartButton : MonoBehaviour {
 	public void StartGame () {
 		startButton.SetActive (false);
 		//start spawning objects once the start button is clicked
-		SceneManager.LoadScene (1);
+		SceneManager.LoadScene (2);
 	}
 }

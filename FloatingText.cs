@@ -10,12 +10,12 @@ public class FloatingText : MonoBehaviour {
 	public Text valueText;
 	public Image icon;
 	
-	public Image[] icons;		//icons should go in this order: [0] health, [1] shield, [2] coins, [3] points
+	public Sprite[] icons;		//icons should go in this order: [0] health, [1] shield, [2] coins, [3] points
 	
-	private healthHolder;
-	private shieldHolder;
-	private coinsHolder;
-	private scoreHolder;
+	private float healthHolder;
+	private float shieldHolder;
+	private int coinsHolder;
+	private int scoreHolder;
 	
 	void Start () {
 		floatingCanvas.SetActive (false);
@@ -26,28 +26,28 @@ public class FloatingText : MonoBehaviour {
 		scoreHolder = Stats.score;
 	}
 	
-	void Update {
+	void Update () {
 		// if any of the values has changed, change the text and icon on the floating canvas and initiate the coroutine
 		if (healthHolder != Stats.currentHealth) {
-			valueText = "" + Stats.currentHealth - healthHolder;
+			valueText.text = "" + (Stats.currentHealth - healthHolder);
 			icon.sprite = icons[0];
 			StartCoroutine (Display ());
 			healthHolder = Stats.currentHealth;
 		}
 		if (shieldHolder != Stats.currentShield) {
-			valueText = "" + Stats.currentShield - shieldHolder;
+			valueText.text = "" + (Stats.currentShield - shieldHolder);
 			icon.sprite = icons[1];
 			StartCoroutine (Display ());
 			shieldHolder = Stats.currentShield;
 		}
 		if (coinsHolder != Stats.coins) {
-			valueText = "" + Stats.coins - coinsHolder;
+			valueText.text = "" + (Stats.coins - coinsHolder);
 			icon.sprite = icons[2];
 			StartCoroutine (Display ());
 			coinsHolder = Stats.coins;
 		} 
 		if (scoreHolder != Stats.score) {
-			valueText = "" + Stats.score - scoreHolder;
+			valueText.text = "" + (Stats.score - scoreHolder);
 			icon.sprite = icons[3];
 			StartCoroutine (Display ());
 			scoreHolder = Stats.score;
