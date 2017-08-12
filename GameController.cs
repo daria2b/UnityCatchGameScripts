@@ -43,8 +43,8 @@ public class GameController : MonoBehaviour {
 		Vector3 targetWidth = cam.ScreenToWorldPoint (upperCorner);
 		float dropWidth = drops[0].GetComponent<Renderer>().bounds.extents.x;
 		maxWidth = targetWidth.x - dropWidth;
-		//set up 10 seconds for the game to play
-		timeLeft = 30.0f;
+		//set up 30 seconds for the game to play
+		timeLeft = 30.0f + Stats.timeBought;
 		StartCoroutine (Spawn ());
 		CountTime ();
 

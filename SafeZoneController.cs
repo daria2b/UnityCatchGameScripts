@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class SafeZoneController : MonoBehaviour {
 
@@ -14,9 +13,11 @@ public class SafeZoneController : MonoBehaviour {
 
 	public GameObject buttonsPanel;
 	public GameObject evolutionPanel;
+	public GameObject shopPanel;
+	public GameObject levelPanel;
 	
 	public GameObject evolveButton;
-	public GameObject catchButton;
+	public GameObject shopButton;
 
 	public Button jumpButton;
 	public Button speedButton;
@@ -25,12 +26,17 @@ public class SafeZoneController : MonoBehaviour {
 	public Text jumpEvolve;
 	public Text speedEvolve;
 	public Text shieldEvolve;
+
+	public Button shopTimeButton;
+	public Button shopHealthButton;
+	public Button shopShieldButton;
 	
 	public GameObject errorPanel;
 	public GameObject successPanel;
 
 	// Use this for initialization
 	void Start () {
+		Stats.timeBought = 0.0f;
 		if (Evolution.shield) 
 			shieldPanel.SetActive (true);
 	}
@@ -47,6 +53,7 @@ public class SafeZoneController : MonoBehaviour {
 		shieldPanel.SetActive (false);
 		coinsPanel.SetActive (false);
 		buttonsPanel.SetActive (false);
+		levelPanel.SetActive (false);
 		evolutionPanel.SetActive (true);
 
 		jumpButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 20);
@@ -67,19 +74,40 @@ public class SafeZoneController : MonoBehaviour {
 			shieldButton.interactable = false;
 		}
 	}
-	
-	//Called when the Play button is clicked and loads a level 
-	public void GoToCatch () {
-		SceneManager.LoadScene (1);
+
+	//Called when Shop button is clicked. Open the panel where the player can buy upgrades
+	public void ShowShopPanel () {
+		//Display only relevant buttons and images
+		healthPanel.SetActive (false);
+		shieldPanel.SetActive (false);
+		pointsPanel.SetActive (false);
+		buttonsPanel.SetActive (false);
+		levelPanel.SetActive (false);
+		shopPanel.SetActive (true);
+
+		shopTimeButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 15);
+		shopHealthButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 16);
+		shopShieldButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 12);
+		//disable buttons and text if player has no need to buy these upgrades
+		if (Stats.currentHealth == Stats.maxHealth) {
+			shopHealthButton.interactable = false;
+		} 
+		if (Stats.currentShield == Stats.maxShield) {
+			shopShieldButton.interactable = false;
+		}
+
 	}
 	
 	//Called when the button Back is clicked to go to the main screen
 	public void BackToStats () {
+		evolutionPanel.SetActive (false);
+		shopPanel.SetActive (false);
+		levelPanel.SetActive (true);
 		healthPanel.SetActive (true);
 		if (Evolution.shield) 
 			shieldPanel.SetActive (true);
 		coinsPanel.SetActive (true);
-		evolutionPanel.SetActive (false);
+		pointsPanel.SetActive (true);
 		buttonsPanel.SetActive (true);
 	}
 	
@@ -113,6 +141,46 @@ public class SafeZoneController : MonoBehaviour {
 					shieldButton.interactable = false;
 					break;
 			}	
+		}
+	}
+
+	//This is called on the Shop screen when player buys upgrades
+	//Checks if player has enough coins to spend
+	//If yes, various stats are changed
+	public void ShopButtonPressed (int index) {
+		//check if the player has enough points to spend depending on his current level
+		switch (index) {
+		case 1:		//stands for time
+			if (Stats.coins < (Evolution.playerLevel * 15)) {
+				StartCoroutine (ShowErrorMessage ());
+			} else {
+				//executes more time to buy
+				Stats.coins -= (Evolution.playerLevel * 15);
+				Stats.timeBought += 10.0f;
+				StartCoroutine (ShowSuccessMessage ());
+			}
+			break;
+		case 2: //stands for health
+			if (Stats.coins < (Evolution.playerLevel * 16)) {
+				StartCoroutine (ShowErrorMessage ());
+			} else {
+				//executes more time to buy
+				Stats.coins -= (Evolution.playerLevel * 16);
+				Stats.currentHealth = Stats.maxHealth;
+				StartCoroutine (ShowSuccessMessage ());
+			}
+			break;
+		case 3:	//stands for shield
+			if (Stats.coins < (Evolution.playerLevel * 12)) {
+				StartCoroutine (ShowErrorMessage ());
+			} else {
+				//executes more time to buy
+				Stats.coins -= (Evolution.playerLevel * 12);
+				Stats.currentShield = Stats.maxShield;
+				StartCoroutine (ShowSuccessMessage ());
+			}
+			break;
+					
 		}
 	}
 	

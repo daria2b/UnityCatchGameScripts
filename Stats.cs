@@ -19,6 +19,9 @@ public class Stats : MonoBehaviour {
 	[HideInInspector] public static float maxShield = 0;
 	[HideInInspector] public static float currentShield;
 
+	//used to add more time for the next level
+	[HideInInspector] public static float timeBought;
+
 
 	//keep this script containing static variables when switching from one scene to another
 	void Awake() {
