@@ -25,7 +25,7 @@ public class UpdateText : MonoBehaviour {
 		healthHolder = Stats.currentHealth;
 		coinsHolder = Stats.coins;
 		
-		UpdateScore();
+		UpdateScore ();
 		UpdateHealth ();
 		UpdateCoins ();
 		UpdateShield ();

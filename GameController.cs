@@ -50,7 +50,7 @@ public class GameController : MonoBehaviour {
 		float dropWidth = drops[0].GetComponent<Renderer>().bounds.extents.x;
 		maxWidth = targetWidth.x - dropWidth;
 		//set up 30 seconds for the game to play
-		timeLeft = 30.0f + Stats.timeBought;
+		timeLeft = 10.0f + Stats.timeBought;
 		StartCoroutine (Spawn ());
 		CountTime ();
 

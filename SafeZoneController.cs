@@ -39,12 +39,15 @@ public class SafeZoneController : MonoBehaviour {
 	private int timeCost = 64;
 	private int timePrice;
 
+	//this reference will be used to update text with high scores in the Hub
+	public GameObject scorePanel;
+
 	// Use this for initialization
 	void Start () {
 		Stats.timeBought = 0.0f;
 		if (Evolution.shield) 
 			shieldPanel.SetActive (true);
-		timePrice = timeCost + timeCost * (Stats.timeBought / 10);
+		timePrice = timeCost + timeCost * ((int) Stats.timeBought / 10);
 	}
 
 	// Update is called once per frame
@@ -69,7 +72,6 @@ public class SafeZoneController : MonoBehaviour {
 		} else {
 			UpdatePrice (jumpButton, (Evolution.playerLevel * evolutionCost).ToString());
 		}
-			.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
 		if (Evolution.speed) {
 			speedButton.interactable = false;
 			UpdatePrice (speedButton, "Evolved!");
@@ -107,11 +109,37 @@ public class SafeZoneController : MonoBehaviour {
 		}
 
 	}
+
+	public void ShowScorePanel () {
+		//Display only relevant buttons and images
+		healthPanel.SetActive (false);
+		shieldPanel.SetActive (false);
+		pointsPanel.SetActive (false);
+		coinsPanel.SetActive (false);
+		buttonsPanel.SetActive (false);
+		levelPanel.SetActive (false);
+		scorePanel.SetActive (true);
+
+		//find text components under the panel and update the high score value
+		UpdateScoreValue ("VertLayoutPanel/Level1Panel/Level1Score", HighScoreScript.highScoreValley);
+		UpdateScoreValue ("VertLayoutPanel/Level2Panel/Level2Score", HighScoreScript.highScoreSands);
+		UpdateScoreValue ("VertLayoutPanel/Level3Panel/Level3Score", HighScoreScript.highScoreRocks);
+		UpdateScoreValue ("VertLayoutPanel/Level4Panel/Level4Score", HighScoreScript.highScoreForest);
+
+	}
+
+	//function to find all text objects under Scor Panel and update them by using the provided path and score
+	void UpdateScoreValue (string path, int score) {
+		Transform levelScore = scorePanel.transform.Find (path);
+		Text scoreText = levelScore.GetComponent<Text> ();
+		scoreText.text = score.ToString();
+	}
 	
 	//Called when the button Back is clicked to go to the main screen
 	public void BackToStats () {
 		evolutionPanel.SetActive (false);
 		shopPanel.SetActive (false);
+		scorePanel.SetActive (false);
 		levelPanel.SetActive (true);
 		healthPanel.SetActive (true);
 		if (Evolution.shield) 
@@ -133,7 +161,7 @@ public class SafeZoneController : MonoBehaviour {
 			Stats.score -= (Evolution.playerLevel * evolutionCost);
 			StartCoroutine (ShowSuccessMessage ("You/'ve acquired new evolution!"));
 			Evolution.playerLevel +=1;			//Player level increases after each evolution bought
-			if (Stats.currentHealth == maxHealth) {		//Maximum health increases by 5 after each evolution
+			if (Stats.currentHealth == Stats.maxHealth) {		//Maximum health increases by 5 after each evolution
 				Stats.maxHealth += 5; 			//Current health is updated depending on what it was before the evolution
 				Stats.currentHealth = Stats.maxHealth;
 			} else {
@@ -191,7 +219,7 @@ public class SafeZoneController : MonoBehaviour {
 				//add more time to the player
 				Stats.timeBought += 10.0f;
 				//recalculate new time price
-				timePrice = timeCost + timeCost * (Stats.timeBought / 10);
+				timePrice = timeCost + timeCost * ((int) Stats.timeBought / 10);
 				//show new price on the button
 				UpdatePrice (shopTimeButton, timePrice.ToString());
 				//Show success message

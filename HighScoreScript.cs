@@ -13,12 +13,6 @@ public class HighScoreScript : MonoBehaviour {
 	[HideInInspector] public static int highScoreSands = 0;
 	[HideInInspector] public static int highScoreRocks = 0;
 	[HideInInspector] public static int highScoreForest = 0;
-	
-	//these references will be used to update text with high scores in the Hub
-	public Text valleyHighScore;
-	public Text sandsHighScore;
-	public Text rocksHighScore;
-	public forestHighScore;
 
 	//keep this script containing static variables when switching from one scene to another
 	void Awake() {
