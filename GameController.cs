@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
+	//variables used to modify spawn rate in inspector easily for each level
+	public float minSpawnRate = 1.0f;
+	public float maxSpawnRate = 2.0f;
+
 	public Camera cam;
 	//prefab to be used for drops
 	public GameObject[] drops;
@@ -74,8 +78,7 @@ public class GameController : MonoBehaviour {
 
 	IEnumerator Spawn () {
 		//Display the level name and count down to start the game
-		gameStartText.text = "Sun Valley";
-		yield return new WaitForSeconds (1.0f);
+		yield return new WaitForSeconds (0.5f);
 		gameStartText.text = "3";
 		yield return new WaitForSeconds (1.0f);
 		gameStartText.text = "2";
@@ -101,7 +104,7 @@ public class GameController : MonoBehaviour {
 			Instantiate (drop, spawnPosition, spawnRotation);
 			//if the infinite loop has no condition, the game will generate objects each frame and will crach as it won't be able to render anything else
 			//yield command asks to wait for a period between 1 to 2 seconds in this case
-			yield return new WaitForSeconds (Random.Range (1.0f, 2.0f));
+			yield return new WaitForSeconds (Random.Range (minSpawnRate, maxSpawnRate));
 		}
 
 		//if game time is 0, turn on game over text and then show restart button
