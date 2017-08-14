@@ -31,8 +31,10 @@ Here below is the list of mechanics that have been completed or are in plan to b
 	- [x] Jump mechanics
 	- [x] Increased speed mechanics
 	- [x] Shield mechanics
-- [ ] Health system
-- [ ] Money system
-- [ ] Player Level system
-- [ ] New areas to explore
-- [ ] Improved representation of points, levels, health, coins and timer
+- [x] Health system
+- [x] Money system
+- [x] Player Level system
+- [x] New areas to explore
+- [x] Improved representation of points, levels, health, coins and timer
+- [ ] High score count for each level
+- [ ] More sophisticated level up system
