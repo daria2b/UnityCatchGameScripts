@@ -9,6 +9,7 @@ public class Restart : MonoBehaviour {
 
 	//this function has to be public
 	public void RestartGame () {
+		Stats.timeBought = 0f;
 		SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex);
 		//send new boolean value to the ToggleController under PlayerController script to enable player controls when Start button is clicked
 		playerController.ToggleControl (true);
