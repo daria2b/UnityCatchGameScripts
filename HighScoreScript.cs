@@ -9,10 +9,10 @@ public class HighScoreScript : MonoBehaviour {
 	//The script will use static variable to be accessible from multiple scenes
 	//These values should not be changed through the inspector
 	//Each level will update the relevant value
-	[HideInInspector] public int highScoreValley = 0;
-	[HideInInspector] public int highScoreSands = 0;
-	[HideInInspector] public int highScoreRocks = 0;
-	[HideInInspector] public int highScoreForest = 0;
+	[HideInInspector] public static int highScoreValley = 0;
+	[HideInInspector] public static int highScoreSands = 0;
+	[HideInInspector] public static int highScoreRocks = 0;
+	[HideInInspector] public static int highScoreForest = 0;
 	
 	//these references will be used to update text with high scores in the Hub
 	public Text valleyHighScore;
