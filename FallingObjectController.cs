@@ -14,6 +14,7 @@ public class FallingObjectController : MonoBehaviour {
 	//Then destroy self on contact with other colliders (to be carried over from the destroyer colliders)
 	void OnTriggerEnter2D (Collider2D other) {
 		if (other.gameObject.tag == "Player") {
+
 			//increment the score
 			Stats.score += pointsValue;
 			Stats.coins += coinsValue;
@@ -28,7 +29,7 @@ public class FallingObjectController : MonoBehaviour {
 			}
 			//Destroy object on contact with player
 			Destroy (gameObject);
-		} else if (other.gameObject.tag == "Ground") {
+		} else if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Edge") {
 			//Destroy object on contact with ground if it hasn't collide with the player
 			//Falling objects will not be destroyed on contact with other falling objects
 			Destroy (gameObject);
