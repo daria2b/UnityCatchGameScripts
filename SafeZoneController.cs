@@ -34,6 +34,9 @@ public class SafeZoneController : MonoBehaviour {
 	public GameObject errorPanel;
 	public GameObject successPanel;
 
+	//a base cost of an evolution, recalculated for each level
+	private int evolutionCost = 26;
+
 	// Use this for initialization
 	void Start () {
 		Stats.timeBought = 0.0f;
@@ -56,9 +59,13 @@ public class SafeZoneController : MonoBehaviour {
 		levelPanel.SetActive (false);
 		evolutionPanel.SetActive (true);
 
-		jumpButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 20);
-		speedButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 20);
-		shieldButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 20);
+		//some hacky code to make buttons show needed info
+		if (!Evolution.jump) 
+			jumpButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+		if (!Evolution.speed)
+			speedButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+		if (!Evolution.shield)
+			shieldButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
 		//disable buttons and text if evolutions were already bought 
 		//Plan to remove the button altogether and update the title with a green checkbox to show that evolution was bought already
 		if (Evolution.jump) {
@@ -114,32 +121,53 @@ public class SafeZoneController : MonoBehaviour {
 	//This is called by the button that sends integer to identify what evolution has been chosen by player
 	//Checks if player has enough points to spend on the evolution
 	//If yes, set this evolution to true
-	public void ButtonPressedCallback (int index) {
+	public void EvolveButtonPressed (int index) {
 		//check if the player has enough points to spend depending on his current level
-		if (Stats.score < (Evolution.playerLevel * 20)) {
+		if (Stats.score < (Evolution.playerLevel * evolutionCost)) {
 			StartCoroutine (ShowErrorMessage ());
 		} else {
 			//this part identifies what evolution has been chose, but it will need to be changed to a distionary instead
-			Stats.score -= (Evolution.playerLevel * 20);
+			Stats.score -= (Evolution.playerLevel * evolutionCost);
 			StartCoroutine (ShowSuccessMessage ());
 			Evolution.playerLevel +=1;		//Player level increases after each evolution bought
 			Stats.maxHealth += 5; 			//Maximum health increases by 5 after each evolution
 			switch (index) {
-				case 1:
-					Evolution.jump = true;
-					jumpEvolve.color = Color.gray;
-					jumpButton.interactable = false;
-					break;
-				case 2: 
-					Evolution.speed = true;
-					speedEvolve.color = Color.gray;
-					speedButton.interactable = false;
-					break;
-				case 3:
-					Evolution.shield = true;
-					shieldEvolve.color = Color.gray;
-					shieldButton.interactable = false;
-					break;
+			case 1:
+				Evolution.jump = true;
+				jumpEvolve.color = Color.gray;
+				jumpButton.interactable = false;
+				jumpButton.GetComponentInChildren<Text>().text = "Evolved!";
+				if (!Evolution.speed)
+					speedButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+				if (!Evolution.shield)
+					shieldButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+				break;
+			case 2: 
+				Evolution.speed = true;
+				speedEvolve.color = Color.gray;
+				speedButton.interactable = false;
+
+				if (!Evolution.jump) 
+					jumpButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+				if (!Evolution.shield)
+					shieldButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+	
+				speedButton.GetComponentInChildren<Text>().text = "Evolved!";
+
+				break;
+			case 3:
+				Evolution.shield = true;
+				Stats.maxShield = 20;
+				Stats.currentShield = 20;
+				shieldEvolve.color = Color.gray;
+				shieldButton.interactable = false;
+				if (!Evolution.jump) 
+					jumpButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+				if (!Evolution.speed)
+					speedButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+		
+				shieldButton.GetComponentInChildren<Text>().text = "Evolved!";
+				break;
 			}	
 		}
 	}
