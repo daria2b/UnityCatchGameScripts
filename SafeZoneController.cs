@@ -34,14 +34,17 @@ public class SafeZoneController : MonoBehaviour {
 	public GameObject errorPanel;
 	public GameObject successPanel;
 
-	//a base cost of an evolution, recalculated for each level
+	//base costs that are recalculated depending on various aspects
 	private int evolutionCost = 26;
+	private int timeCost = 64;
+	private int timePrice;
 
 	// Use this for initialization
 	void Start () {
 		Stats.timeBought = 0.0f;
 		if (Evolution.shield) 
 			shieldPanel.SetActive (true);
+		timePrice = timeCost + timeCost * (Stats.timeBought / 10);
 	}
 
 	// Update is called once per frame
@@ -59,26 +62,25 @@ public class SafeZoneController : MonoBehaviour {
 		levelPanel.SetActive (false);
 		evolutionPanel.SetActive (true);
 
-		//some hacky code to make buttons show needed info
-		if (!Evolution.jump) 
-			jumpButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
-		if (!Evolution.speed)
-			speedButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
-		if (!Evolution.shield)
-			shieldButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
-		//disable buttons and text if evolutions were already bought 
-		//Plan to remove the button altogether and update the title with a green checkbox to show that evolution was bought already
+		//will correctly update the text on the buttons depending on which evolutions were bought
 		if (Evolution.jump) {
-			jumpEvolve.color = Color.gray;
 			jumpButton.interactable = false;
-		} 
+			UpdatePrice (jumpButton, "Evolved!");
+		} else {
+			UpdatePrice (jumpButton, (Evolution.playerLevel * evolutionCost).ToString());
+		}
+			.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
 		if (Evolution.speed) {
-			speedEvolve.color = Color.gray;
 			speedButton.interactable = false;
+			UpdatePrice (speedButton, "Evolved!");
+		} else {
+			UpdatePrice (speedButton, (Evolution.playerLevel * evolutionCost).ToString());
 		}
 		if (Evolution.shield) {
-			shieldEvolve.color = Color.gray;
 			shieldButton.interactable = false;
+			UpdatePrice (shieldButton, "Evolved!");
+		} else {
+			UpdatePrice (shieldButton, (Evolution.playerLevel * evolutionCost).ToString());
 		}
 	}
 
@@ -92,9 +94,10 @@ public class SafeZoneController : MonoBehaviour {
 		levelPanel.SetActive (false);
 		shopPanel.SetActive (true);
 
-		shopTimeButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 15);
-		shopHealthButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 16);
-		shopShieldButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * 12);
+		UpdatePrice (shopTimeButton, timePrice.ToString());
+		UpdatePrice (shopHealthButton, (Evolution.playerLevel * 16).ToString());
+		UpdatePrice (shopShieldButton, (Evolution.playerLevel * 12).ToString());
+	
 		//disable buttons and text if player has no need to buy these upgrades
 		if (Stats.currentHealth == Stats.maxHealth) {
 			shopHealthButton.interactable = false;
@@ -124,49 +127,50 @@ public class SafeZoneController : MonoBehaviour {
 	public void EvolveButtonPressed (int index) {
 		//check if the player has enough points to spend depending on his current level
 		if (Stats.score < (Evolution.playerLevel * evolutionCost)) {
-			StartCoroutine (ShowErrorMessage ());
+			StartCoroutine (ShowErrorMessage ("You don/'t have enough points to evolve"));
 		} else {
-			//this part identifies what evolution has been chose, but it will need to be changed to a distionary instead
+			//this part identifies what evolution has been chosen, but it will need to be changed to a distionary instead
 			Stats.score -= (Evolution.playerLevel * evolutionCost);
-			StartCoroutine (ShowSuccessMessage ());
-			Evolution.playerLevel +=1;		//Player level increases after each evolution bought
-			Stats.maxHealth += 5; 			//Maximum health increases by 5 after each evolution
+			StartCoroutine (ShowSuccessMessage ("You/'ve acquired new evolution!"));
+			Evolution.playerLevel +=1;			//Player level increases after each evolution bought
+			if (Stats.currentHealth == maxHealth) {		//Maximum health increases by 5 after each evolution
+				Stats.maxHealth += 5; 			//Current health is updated depending on what it was before the evolution
+				Stats.currentHealth = Stats.maxHealth;
+			} else {
+				Stats.maxHealth += 5;
+				Stats.currentHealth += 5;
+			}
+						
+			
 			switch (index) {
 			case 1:
 				Evolution.jump = true;
-				jumpEvolve.color = Color.gray;
 				jumpButton.interactable = false;
-				jumpButton.GetComponentInChildren<Text>().text = "Evolved!";
+				UpdatePrice (jumpButton, "Evolved!");	
 				if (!Evolution.speed)
-					speedButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+					UpdatePrice (speedButton, (Evolution.playerLevel * evolutionCost).ToString());
 				if (!Evolution.shield)
-					shieldButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+					UpdatePrice (shieldButton, (Evolution.playerLevel * evolutionCost).ToString());
 				break;
 			case 2: 
 				Evolution.speed = true;
-				speedEvolve.color = Color.gray;
 				speedButton.interactable = false;
-
-				if (!Evolution.jump) 
-					jumpButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+				UpdatePrice (speedButton, "Evolved!");	
+				if (!Evolution.jump)
+					UpdatePrice (jumpButton, (Evolution.playerLevel * evolutionCost).ToString());
 				if (!Evolution.shield)
-					shieldButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
-	
-				speedButton.GetComponentInChildren<Text>().text = "Evolved!";
-
+					UpdatePrice (shieldButton, (Evolution.playerLevel * evolutionCost).ToString());
 				break;
 			case 3:
 				Evolution.shield = true;
 				Stats.maxShield = 20;
 				Stats.currentShield = 20;
-				shieldEvolve.color = Color.gray;
 				shieldButton.interactable = false;
-				if (!Evolution.jump) 
-					jumpButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
+				UpdatePrice (shieldButton, "Evolved!");	
+				if (!Evolution.jump)
+					UpdatePrice (jumpButton, (Evolution.playerLevel * evolutionCost).ToString());
 				if (!Evolution.speed)
-					speedButton.GetComponentInChildren<Text>().text = "" + (Evolution.playerLevel * evolutionCost);
-		
-				shieldButton.GetComponentInChildren<Text>().text = "Evolved!";
+					UpdatePrice (speedButton, (Evolution.playerLevel * evolutionCost).ToString());
 				break;
 			}	
 		}
@@ -179,53 +183,66 @@ public class SafeZoneController : MonoBehaviour {
 		//check if the player has enough points to spend depending on his current level
 		switch (index) {
 		case 1:		//stands for time
-			if (Stats.coins < (Evolution.playerLevel * 15)) {
-				StartCoroutine (ShowErrorMessage ());
+			if (Stats.coins < timePrice) {
+				StartCoroutine (ShowErrorMessage ("You don/'t have enough coins"));
 			} else {
-				//executes more time to buy
-				Stats.coins -= (Evolution.playerLevel * 15);
+				//remove coins depending on the price
+				Stats.coins -= timePrice;
+				//add more time to the player
 				Stats.timeBought += 10.0f;
-				StartCoroutine (ShowSuccessMessage ());
+				//recalculate new time price
+				timePrice = timeCost + timeCost * (Stats.timeBought / 10);
+				//show new price on the button
+				UpdatePrice (shopTimeButton, timePrice.ToString());
+				//Show success message
+				StartCoroutine (ShowSuccessMessage ("You bought 10 more seconds for the rest of the game"));
 			}
 			break;
 		case 2: //stands for health
 			if (Stats.coins < (Evolution.playerLevel * 16)) {
-				StartCoroutine (ShowErrorMessage ());
+				StartCoroutine (ShowErrorMessage ("You don/'t have enough coins"));
 			} else {
 				//executes more time to buy
 				Stats.coins -= (Evolution.playerLevel * 16);
 				Stats.currentHealth = Stats.maxHealth;
-				StartCoroutine (ShowSuccessMessage ());
+				StartCoroutine (ShowSuccessMessage ("You restored your health"));
 			}
 			break;
 		case 3:	//stands for shield
 			if (Stats.coins < (Evolution.playerLevel * 12)) {
-				StartCoroutine (ShowErrorMessage ());
+				StartCoroutine (ShowErrorMessage ("You don/'t have enough coins"));
 			} else {
 				//executes more time to buy
 				Stats.coins -= (Evolution.playerLevel * 12);
 				Stats.currentShield = Stats.maxShield;
-				StartCoroutine (ShowSuccessMessage ());
+				StartCoroutine (ShowSuccessMessage ("You restored your shield"));
 			}
 			break;
 					
 		}
 	}
 	
+	//function used to update text on any button whenever price changed
+	void UpdatePrice (Button button, string newText) {
+		button.GetComponentInChildren<Text>().text = newText;
+	}
+	
 	//Called if the player did not have enough points to evolve. Shows error message
-	private IEnumerator ShowErrorMessage () {
+	private IEnumerator ShowErrorMessage (string message) {
 		if (successPanel.activeSelf) 
 			successPanel.SetActive (false);
 		errorPanel.SetActive (true);
+		errorPanel.GetComponentInChildren<Text>().text = message;
 		yield return new WaitForSeconds (2.0f);
 		errorPanel.SetActive (false);
 	}
 	
 	//Called if the player had enough points to evolve. Shows success message
-	private IEnumerator ShowSuccessMessage () {
+	private IEnumerator ShowSuccessMessage (string message) {
 		if (errorPanel.activeSelf) 
 			errorPanel.SetActive (false);
 		successPanel.SetActive (true);
+		successPanel.GetComponentInChildren<Text>().text = message;
 		yield return new WaitForSeconds (2.0f);
 		successPanel.SetActive (false);
 	}
