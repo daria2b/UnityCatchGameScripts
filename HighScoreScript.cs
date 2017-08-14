@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //This script will hold information on what is the highest score the player has acieved on each level and in total
-public class HighestScoreScript : MonoBehaviour {
+public class HighScoreScript : MonoBehaviour {
 	
 	//The script will use static variable to be accessible from multiple scenes
 	//These values should not be changed through the inspector
