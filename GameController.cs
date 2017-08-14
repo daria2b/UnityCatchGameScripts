@@ -24,8 +24,9 @@ public class GameController : MonoBehaviour {
 	//will hold the title of the area and the countdown till the beginning of the actual game
 	public Text gameStartText;
 
-	//will be used to control the timer
+	//will be used to control the player and the score count
 	private bool playing;
+	public bool endLevel;
 
 	//reference to the script attached to the player
 	public PlayerController playerController;
@@ -36,6 +37,7 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		endLevel = false;
 		if (cam == null)
 			cam = Camera.main;
 		playing = false;
@@ -110,6 +112,7 @@ public class GameController : MonoBehaviour {
 		//if game time is 0, turn on game over text and then show restart button
 		yield return new WaitForSeconds(2.0f);
 		timesUpText.SetActive (true);
+		endLevel = true;
 		yield return new WaitForSeconds(2.0f);
 		endLevelPanel.SetActive (true);
 	}
