@@ -15,25 +15,17 @@ public class SafeZoneController : MonoBehaviour {
 	public GameObject evolutionPanel;
 	public GameObject shopPanel;
 	public GameObject levelPanel;
-	
-	public GameObject evolveButton;
-	public GameObject shopButton;
 
 	public Button jumpButton;
 	public Button speedButton;
 	public Button shieldButton;
 
-	public Text jumpEvolve;
-	public Text speedEvolve;
-	public Text shieldEvolve;
-
 	public Button shopTimeButton;
 	public Button shopHealthButton;
 	public Button shopShieldButton;
 	
-	public GameObject errorPanel;
-	public GameObject successPanel;
-
+	public GameObject messagePanel;
+	
 	//base costs that are recalculated depending on various aspects
 	private int evolutionCost = 26;
 	private int timeCost = 64;
@@ -155,11 +147,11 @@ public class SafeZoneController : MonoBehaviour {
 	public void EvolveButtonPressed (int index) {
 		//check if the player has enough points to spend depending on his current level
 		if (Stats.score < (Evolution.playerLevel * evolutionCost)) {
-			StartCoroutine (ShowErrorMessage ("You don/'t have enough points to evolve"));
+			StartCoroutine (ShowMessage ("You don/'t have enough points to evolve"));
 		} else {
 			//this part identifies what evolution has been chosen, but it will need to be changed to a distionary instead
 			Stats.score -= (Evolution.playerLevel * evolutionCost);
-			StartCoroutine (ShowSuccessMessage ("You/'ve acquired new evolution!"));
+			StartCoroutine (ShowMessage ("You/'ve acquired new evolution!"));
 			Evolution.playerLevel +=1;			//Player level increases after each evolution bought
 			if (Stats.currentHealth == Stats.maxHealth) {		//Maximum health increases by 5 after each evolution
 				Stats.maxHealth += 5; 			//Current health is updated depending on what it was before the evolution
@@ -212,7 +204,7 @@ public class SafeZoneController : MonoBehaviour {
 		switch (index) {
 		case 1:		//stands for time
 			if (Stats.coins < timePrice) {
-				StartCoroutine (ShowErrorMessage ("You don/'t have enough coins"));
+				StartCoroutine (ShowMessage ("You don/'t have enough coins"));
 			} else {
 				//remove coins depending on the price
 				Stats.coins -= timePrice;
@@ -223,27 +215,27 @@ public class SafeZoneController : MonoBehaviour {
 				//show new price on the button
 				UpdatePrice (shopTimeButton, timePrice.ToString());
 				//Show success message
-				StartCoroutine (ShowSuccessMessage ("You bought 10 more seconds for the rest of the game"));
+				StartCoroutine (ShowMessage ("You bought 10 more seconds for the rest of the game"));
 			}
 			break;
 		case 2: //stands for health
 			if (Stats.coins < (Evolution.playerLevel * 16)) {
-				StartCoroutine (ShowErrorMessage ("You don/'t have enough coins"));
+				StartCoroutine (ShowMessage ("You don/'t have enough coins"));
 			} else {
 				//executes more time to buy
 				Stats.coins -= (Evolution.playerLevel * 16);
 				Stats.currentHealth = Stats.maxHealth;
-				StartCoroutine (ShowSuccessMessage ("You restored your health"));
+				StartCoroutine (ShowMessage ("You restored your health"));
 			}
 			break;
 		case 3:	//stands for shield
 			if (Stats.coins < (Evolution.playerLevel * 12)) {
-				StartCoroutine (ShowErrorMessage ("You don/'t have enough coins"));
+				StartCoroutine (ShowMessage ("You don/'t have enough coins"));
 			} else {
 				//executes more time to buy
 				Stats.coins -= (Evolution.playerLevel * 12);
 				Stats.currentShield = Stats.maxShield;
-				StartCoroutine (ShowSuccessMessage ("You restored your shield"));
+				StartCoroutine (ShowMessage ("You restored your shield"));
 			}
 			break;
 					
@@ -255,23 +247,11 @@ public class SafeZoneController : MonoBehaviour {
 		button.GetComponentInChildren<Text>().text = newText;
 	}
 	
-	//Called if the player did not have enough points to evolve. Shows error message
-	private IEnumerator ShowErrorMessage (string message) {
-		if (successPanel.activeSelf) 
-			successPanel.SetActive (false);
-		errorPanel.SetActive (true);
-		errorPanel.GetComponentInChildren<Text>().text = message;
+	//Called to show a message
+	private IEnumerator ShowMessage (string message) {
+		messagePanel.SetActive (true);
+		messagePanel.GetComponentInChildren<Text>().text = message;
 		yield return new WaitForSeconds (2.0f);
-		errorPanel.SetActive (false);
-	}
-	
-	//Called if the player had enough points to evolve. Shows success message
-	private IEnumerator ShowSuccessMessage (string message) {
-		if (errorPanel.activeSelf) 
-			errorPanel.SetActive (false);
-		successPanel.SetActive (true);
-		successPanel.GetComponentInChildren<Text>().text = message;
-		yield return new WaitForSeconds (2.0f);
-		successPanel.SetActive (false);
+		messagePanel.SetActive (false);
 	}
 }
