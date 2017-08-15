@@ -26,6 +26,11 @@ public class Stats : MonoBehaviour {
 	//keep this script containing static variables when switching from one scene to another
 	void Awake() {
 		DontDestroyOnLoad(transform.gameObject);
+		//should prevent creating multiple instances of the game object the script is attached to
+		if (FindObjectsOfType(GetType()).Length > 1)
+		{
+		     Destroy(gameObject);
+		}
 	}
 
 	// Use this for initialization
