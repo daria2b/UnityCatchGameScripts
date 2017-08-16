@@ -113,10 +113,10 @@ public class SafeZoneController : MonoBehaviour {
 		scorePanel.SetActive (true);
 
 		//find text components under the panel and update the high score value
-		UpdateScoreValue ("VertLayoutPanel/Level1Panel/Level1Score", HighScoreScript.highScoreValley);
-		UpdateScoreValue ("VertLayoutPanel/Level2Panel/Level2Score", HighScoreScript.highScoreSands);
-		UpdateScoreValue ("VertLayoutPanel/Level3Panel/Level3Score", HighScoreScript.highScoreRocks);
-		UpdateScoreValue ("VertLayoutPanel/Level4Panel/Level4Score", HighScoreScript.highScoreForest);
+		UpdateScoreValue ("VertLayoutPanel/Level1Panel/Image/Level1Score", HighScoreScript.highScoreValley);
+		UpdateScoreValue ("VertLayoutPanel/Level2Panel/Image/Level2Score", HighScoreScript.highScoreSands);
+		UpdateScoreValue ("VertLayoutPanel/Level3Panel/Image/Level3Score", HighScoreScript.highScoreRocks);
+		UpdateScoreValue ("VertLayoutPanel/Level4Panel/Image/Level4Score", HighScoreScript.highScoreForest);
 
 	}
 
@@ -147,11 +147,11 @@ public class SafeZoneController : MonoBehaviour {
 	public void EvolveButtonPressed (int index) {
 		//check if the player has enough points to spend depending on his current level
 		if (Stats.score < (Evolution.playerLevel * evolutionCost)) {
-			StartCoroutine (ShowMessage ("You don/'t have enough points to evolve"));
+			StartCoroutine (ShowMessage ("You don't have enough points to evolve"));
 		} else {
 			//this part identifies what evolution has been chosen, but it will need to be changed to a distionary instead
 			Stats.score -= (Evolution.playerLevel * evolutionCost);
-			StartCoroutine (ShowMessage ("You/'ve acquired new evolution!"));
+			StartCoroutine (ShowMessage ("You've acquired new evolution!"));
 			Evolution.playerLevel +=1;			//Player level increases after each evolution bought
 			if (Stats.currentHealth == Stats.maxHealth) {		//Maximum health increases by 5 after each evolution
 				Stats.maxHealth += 5; 			//Current health is updated depending on what it was before the evolution
@@ -204,7 +204,7 @@ public class SafeZoneController : MonoBehaviour {
 		switch (index) {
 		case 1:		//stands for time
 			if (Stats.coins < timePrice) {
-				StartCoroutine (ShowMessage ("You don/'t have enough coins"));
+				StartCoroutine (ShowMessage ("You don't have enough coins"));
 			} else {
 				//remove coins depending on the price
 				Stats.coins -= timePrice;
@@ -220,7 +220,7 @@ public class SafeZoneController : MonoBehaviour {
 			break;
 		case 2: //stands for health
 			if (Stats.coins < (Evolution.playerLevel * 16)) {
-				StartCoroutine (ShowMessage ("You don/'t have enough coins"));
+				StartCoroutine (ShowMessage ("You don't have enough coins"));
 			} else {
 				//executes more time to buy
 				Stats.coins -= (Evolution.playerLevel * 16);
@@ -230,7 +230,7 @@ public class SafeZoneController : MonoBehaviour {
 			break;
 		case 3:	//stands for shield
 			if (Stats.coins < (Evolution.playerLevel * 12)) {
-				StartCoroutine (ShowMessage ("You don/'t have enough coins"));
+				StartCoroutine (ShowMessage ("You don't have enough coins"));
 			} else {
 				//executes more time to buy
 				Stats.coins -= (Evolution.playerLevel * 12);
