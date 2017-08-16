@@ -7,30 +7,34 @@ public class Appear : MonoBehaviour {
 
 	//references to the elements to activate
 	public GameObject titleImage;
-	public GameObject startButton;
+	public GameObject buttonsPanel;
+	public GameObject helpPanel;
 
 	//variable to be used to define how soon the elements will be activated
-	float timeToTitle;
-	float timeToStart;
+	float startTime = 0f;
+	float timeToAppear = 1.0f;
 
 	// Use this for initialization
 	void Start () {
-		timeToTitle = 1.0f;
-		timeToStart = 2.0f;
+		helpPanel.SetActive (false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (timeToTitle > 0) {
-			timeToTitle -= Time.deltaTime;
-		} else if (timeToStart > 0) {
-			timeToStart -= Time.deltaTime;
+		startTime += Time.deltaTime;
+		if (startTime > (timeToAppear * 2)) {
+			buttonsPanel.SetActive (true);
+		} else if (startTime > timeToAppear) {
+			titleImage.SetActive (true);
 		}
+			
+	}
 
-		if (timeToTitle < 0 && timeToStart > 0) {
-			titleImage.SetActive (true); 
-		} else if (timeToStart < 0) {
-			startButton.SetActive (true);
-		}
+	public void OpenHelpPanel () {
+		helpPanel.SetActive (true);
+	}
+
+	public void CloseHelpPanel () {
+		helpPanel.SetActive (false);
 	}
 }
