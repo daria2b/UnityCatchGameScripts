@@ -16,11 +16,14 @@ public class UpdateHighScore : MonoBehaviour {
 	GameController gameController;
 	//reference to the prefab to instantiate
 	public Text newHighScore;
+	//boolean to check if a message was created already or not
+	private bool isCreated;
 	
 	void Start () {
 		//set strting score to the global score to be able to recalculate new high score at the end of the level
 		startingScore = Stats.score;
 		gameController = gameObject.GetComponent<GameController>();
+		isCreated = false;
 	}
 	
 	void Update () {
@@ -35,7 +38,6 @@ public class UpdateHighScore : MonoBehaviour {
 				{
 					Congratulate ();
 					HighScoreScript.highScoreValley = endingScore;
-					endingScore = 0;
 				}
 				break;
 			case 2:
@@ -43,7 +45,6 @@ public class UpdateHighScore : MonoBehaviour {
 				{
 					Congratulate ();
 					HighScoreScript.highScoreSands = endingScore;
-					endingScore = 0;
 				}
 				break;
 			case 3:
@@ -51,7 +52,6 @@ public class UpdateHighScore : MonoBehaviour {
 				{
 					Congratulate ();
 					HighScoreScript.highScoreRocks = endingScore;
-					endingScore = 0;
 				}
 				break;
 			case 4:
@@ -59,7 +59,6 @@ public class UpdateHighScore : MonoBehaviour {
 				{
 					Congratulate ();
 					HighScoreScript.highScoreForest = endingScore;
-					endingScore = 0;
 				}
 				break;
 			}
@@ -70,12 +69,15 @@ public class UpdateHighScore : MonoBehaviour {
 	//used to display a message that a new high score has been achieved by the player
 	//text prefab needs to be child of a Canvas game object to be visible on screen
 	void Congratulate () { 
-		// find canvas
-		GameObject canvas = GameObject.Find("MessagesCanvas");
-		// clone the prefab 
-		Text congrats = Instantiate(newHighScore, new Vector3 (Screen.width*0.5f, Screen.height*0.5f, 0), Quaternion.identity);
-		// set canvas as parent to the text
-		congrats.transform.SetParent(canvas.transform);
+		if (!isCreated) {
+			// find canvas
+			GameObject canvas = GameObject.Find ("MessagesCanvas");
+			// clone the prefab 
+			Text congrats = Instantiate (newHighScore, new Vector3 (Screen.width * 0.5f, Screen.height * 0.5f, 0), Quaternion.identity);
+			// set canvas as parent to the text
+			congrats.transform.SetParent (canvas.transform);
+			isCreated = true;
+		}
 	}
 	
 }
