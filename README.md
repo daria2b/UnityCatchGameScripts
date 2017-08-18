@@ -6,7 +6,7 @@ This repository will contain scripts in C# for my very first video game project 
 To create scripts I have been following various video tutorials online that I have been modifying specifically for my project.
 
 ## Catch Evolve
-> The biggest creature rules the world. Catch smaller creatures and evolve to catch even bigger ones. Become the dominant species.
+> A 2D game where you need to catch as many objects as you can in a limited time and use earned points to buy new evolutions to unlock new levels and get the highest score possible. 
 
 *Catch Evolve* is a simple catch game where you need to catch falling objects to gaing points that you can spend on evolutions. Become bigger, faster and stronger. But beware of bigger species that can hunt you instead. 
 
@@ -36,5 +36,6 @@ Here below is the list of mechanics that have been completed or are in plan to b
 - [x] Player Level system
 - [x] New areas to explore
 - [x] Improved representation of points, levels, health, coins and timer
-- [ ] High score count for each level
-- [ ] More sophisticated level up system
+- [x] High score count for each level
+- [ ] Game over when health reaches 0
+- [ ] Boss fights
