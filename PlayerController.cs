@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 	public float maxSpeed = 8f;
-	public float jumpForce = 350f;
+	public float jumpForce = 200f;
 
 	//references to different components of this game object
 	Rigidbody2D myRB;
@@ -19,10 +19,10 @@ public class PlayerController : MonoBehaviour {
 	private bool canControl;
 
 	//to hold start position of the player
-	private Vector3 startPosition;
+	//private Vector3 startPosition;
 
-	//used to count down until the player can jump again
-	float jumpTimeCount;
+	//boolean used for jumping calculations
+	[HideInInspector] public bool onGround;
 
 	// Use this for initialization
 	void Start () {
@@ -30,19 +30,22 @@ public class PlayerController : MonoBehaviour {
 		myAnimation = GetComponent<Animator> ();	
 		facingRight = true;
 		canControl = true;
-		startPosition = transform.position;
+		onGround = true;
+		//startPosition = transform.position;
 		//as soon as the player evolved to jump
 		if (Evolution.speed) {
 			maxSpeed = 12f;
 		}
 	}
 
-	void Update () {
-		jumpTimeCount -= Time.deltaTime;
-		if (Evolution.jump && Input.GetAxis ("Jump") > 0 && jumpTimeCount < 0) {
-			jumpTimeCount = 1f;
-			myRB.AddForce (new Vector2 (0, jumpForce));
+	void OnTriggerStay2D (Collider2D other) {
+		if (other.gameObject.tag == "Edge") {
+			onGround = true;
 		}
+	}
+
+	void Update () {
+		
 	}
 
 	// Update is called once per frame
@@ -72,7 +75,10 @@ public class PlayerController : MonoBehaviour {
 			//touchingGround && Evolution.jump &&
 
 		}
-
+		if (Evolution.jump && Input.GetAxis ("Jump") > 0 && onGround) {
+			myRB.AddForce (transform.up * jumpForce);
+			onGround = false;
+		}
 
 		 
 	}
