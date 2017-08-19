@@ -11,11 +11,17 @@ public class UpdateText : MonoBehaviour {
 	public Text healthText;
 	public Text coinsText;
 	public Text shieldText;
-	
+
+	//prefabs of text
+	public Text floatingText;
+	//Text healthFloating;
+	//Text coinsFloating;
+	//Text shieldFloating;
+
 	//these will be used to check when to update the text on the screen
 	private int scoreHolder;
 	private float healthHolder;
-	private float coinsHolder;
+	private int coinsHolder;
 	private float shieldHolder;
 	
 	// Initiate private variables by accessible the static values under Stats.cs and update the text as needed
@@ -24,7 +30,9 @@ public class UpdateText : MonoBehaviour {
 		shieldHolder = Stats.currentShield;
 		healthHolder = Stats.currentHealth;
 		coinsHolder = Stats.coins;
-		
+
+
+		//call update functions at the start of the level
 		UpdateScore ();
 		UpdateHealth ();
 		UpdateCoins ();
@@ -35,19 +43,23 @@ public class UpdateText : MonoBehaviour {
 	void Update () {
 		if (scoreHolder != Stats.score) {
 			UpdateScore ();
+			DisplayStatsChange (scoreText, "+", (Stats.score - scoreHolder));
 			scoreHolder = Stats.score;
 		}
 		//check if the other values has been changed as well
 		if (healthHolder != Stats.currentHealth) {
 			UpdateHealth();
+			DisplayStatsChange (healthText, "", (int)(Stats.currentHealth - healthHolder));
 			healthHolder = Stats.currentHealth;
 		}
 		if (coinsHolder != Stats.coins) {
 			UpdateCoins();
+			DisplayStatsChange (coinsText, "+", (Stats.coins - coinsHolder));
 			coinsHolder = Stats.coins;
 		}
 		if (shieldHolder != Stats.currentShield) {
 			UpdateShield();
+			DisplayStatsChange (shieldText, "", (int)(Stats.currentShield - shieldHolder));
 			shieldHolder = Stats.currentShield;
 		}
 	}
@@ -67,6 +79,14 @@ public class UpdateText : MonoBehaviour {
 
 	void UpdateShield () {
 		shieldText.text = "" + Stats.currentShield + "/" + Stats.maxShield;
+	}
+
+	void DisplayStatsChange (Text position, string sign, int stats) {
+		Text floating = Instantiate (floatingText, position.transform.position, Quaternion.identity);
+		floating.transform.SetParent (position.transform);
+		floating.text = "" + sign + stats;
+		if (stats < 0) 
+			floating.color = Color.red;
 	}
 	
 }
