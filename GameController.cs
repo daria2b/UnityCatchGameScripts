@@ -30,10 +30,12 @@ public class GameController : MonoBehaviour {
 
 	//reference to the script attached to the player
 	public PlayerController playerController;
-
+	//reference to game over panel
+	public GameObject gameOverPanel;
 
 	//will be used to calculate the spawn position
 	private float maxWidth;
+
 
 	// Use this for initialization
 	void Start () {
@@ -51,7 +53,7 @@ public class GameController : MonoBehaviour {
 		maxWidth = targetWidth.x - dropWidth;
 		//set up 30 seconds for the game to play
 		timeLeft = 30.0f + Stats.timeBought;
-		StartCoroutine (Spawn ());
+		StartCoroutine ("Spawn");
 		CountTime ();
 
 
@@ -68,6 +70,12 @@ public class GameController : MonoBehaviour {
 			//don't have to convert it to a string, it converts automatically. Mathf will round the timeLeft float to an int to show how many seconds are left to play
 			CountTime ();
 		}
+
+		if (playerController.isDead) {
+			StartCoroutine (GaveOver ());
+			playing = false;
+			StopCoroutine ("Spawn");
+		}
 	}
 
 	void CountTime () {
@@ -76,6 +84,11 @@ public class GameController : MonoBehaviour {
 
 	public void GoToTheHub () {
 		SceneManager.LoadScene (2);
+	}
+
+	IEnumerator GaveOver () {
+		yield return new WaitForSeconds (3.0f);
+		gameOverPanel.SetActive (true);
 	}
 
 	IEnumerator Spawn () {
