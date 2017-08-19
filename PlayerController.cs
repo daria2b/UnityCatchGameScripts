@@ -18,8 +18,9 @@ public class PlayerController : MonoBehaviour {
 	//boolean to check if we can control the player (the game started or not)
 	private bool canControl;
 
-	//to hold start position of the player
-	//private Vector3 startPosition;
+	//death effects used on player death
+	public GameObject deathFX;
+	[HideInInspector] public bool isDead;
 
 	//boolean used for jumping calculations
 	[HideInInspector] public bool onGround;
@@ -30,7 +31,8 @@ public class PlayerController : MonoBehaviour {
 		myAnimation = GetComponent<Animator> ();	
 		facingRight = true;
 		canControl = true;
-		onGround = true;
+		onGround = false;
+		isDead = false;
 		//startPosition = transform.position;
 		//as soon as the player evolved to jump
 		if (Evolution.speed) {
@@ -45,7 +47,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
-		
+		if (Stats.currentHealth <= 0) {
+			MakeDead ();
+		}
 	}
 
 	// Update is called once per frame
@@ -71,16 +75,11 @@ public class PlayerController : MonoBehaviour {
 				transform.rotation = Quaternion.identity;
 			}	
 
-			//as soon as the player evolved to jump
-			//touchingGround && Evolution.jump &&
-
+			if (Evolution.jump && Input.GetAxis ("Jump") > 0 && onGround) {
+				myRB.AddForce (transform.up * jumpForce);
+				onGround = false;
+			}
 		}
-		if (Evolution.jump && Input.GetAxis ("Jump") > 0 && onGround) {
-			myRB.AddForce (transform.up * jumpForce);
-			onGround = false;
-		}
-
-		 
 	}
 
 	
@@ -95,6 +94,18 @@ public class PlayerController : MonoBehaviour {
 	//toggle player controls 
 	public void ToggleControl (bool toggle) {
 		canControl = toggle;
+	}
+
+	public void MakeDead () {
+		canControl = false;
+		myAnimation.SetBool ("isDead", true);
+		Invoke ("LaunchDeathFX", 1.0f);
+	}
+
+	public void LaunchDeathFX () {
+		Instantiate (deathFX, transform.position, transform.rotation);
+		Destroy (gameObject);
+		isDead = true;
 	}
 		
 }
