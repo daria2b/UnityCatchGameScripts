@@ -42,10 +42,7 @@ public class SafeZoneController : MonoBehaviour {
 		timePrice = timeCost + timeCost * ((int) Stats.timeBought / 10);
 	}
 
-	// Update is called once per frame
-	void Update () {
 
-	}
 	
 	//Called when Evolve button is clicked. Open the panel where the player can choose an evolution to buy
 	public void ShowEvolvePanel () {
