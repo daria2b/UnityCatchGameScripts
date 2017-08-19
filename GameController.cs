@@ -36,6 +36,8 @@ public class GameController : MonoBehaviour {
 	//will be used to calculate the spawn position
 	private float maxWidth;
 
+	//variable used to change maxWidth on levels when needed
+	public bool smallerScreen = false;
 
 	// Use this for initialization
 	void Start () {
@@ -51,6 +53,9 @@ public class GameController : MonoBehaviour {
 		Vector3 targetWidth = cam.ScreenToWorldPoint (upperCorner);
 		float dropWidth = drops[0].GetComponent<Renderer>().bounds.extents.x;
 		maxWidth = targetWidth.x - dropWidth;
+		if (smallerScreen = true) {
+			maxWidth -= dropWidth * 5;
+		}
 		//set up 30 seconds for the game to play
 		timeLeft = 30.0f + Stats.timeBought;
 		StartCoroutine ("Spawn");
