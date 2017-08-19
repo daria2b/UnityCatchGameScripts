@@ -32,8 +32,5 @@ public class Stats : MonoBehaviour {
 		     Destroy(gameObject);
 		}
 	}
-
-	// Use this for initialization
-	void Start () {
-	}
+		
 }
