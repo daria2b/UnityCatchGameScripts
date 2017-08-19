@@ -76,7 +76,8 @@ public class PlayerController : MonoBehaviour {
 			}	
 
 			if (Evolution.jump && Input.GetAxis ("Jump") > 0 && onGround) {
-				myRB.AddForce (transform.up * jumpForce);
+				myRB.AddForce (new Vector2 (0, jumpForce));
+				//(transform.up * jumpForce);
 				onGround = false;
 			}
 		}
